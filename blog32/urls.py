@@ -21,8 +21,9 @@ urlpatterns = [
     path('hashtags/', posts_views.hashtags_view),
     # users
     path('users/register/', users_view.register_view),
-    path('users/login/', users_view.login_view),
+    path('users/login/', users_view.login_view, name='login'),
     path('users/logout/', users_view.logout_view),
+
 
 ]
 
