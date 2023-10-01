@@ -11,11 +11,13 @@ def main_view(request):
 
 
 def posts_view(request):
+    print(request.user)
     if request.method == 'GET':
         posts = Post.objects.all()
 
         context_data = {
-            'posts': posts
+            'posts': posts,
+            'user': request.user
         }
 
         return render(request, 'posts/posts.html', context=context_data)
