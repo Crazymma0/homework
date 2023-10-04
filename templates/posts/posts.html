@@ -12,6 +12,10 @@
         }
     </style>
     <div class="posts">
+    <form action="/posts/" method="get">
+        <input type="text" name="search">
+        <input type="submit" value="Search">
+    </form>
         {% for post in posts %}
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
@@ -23,6 +27,14 @@
                     <a href="/posts/{{ post.id }}/" class="card-link">More</a>
                 </div>
             </div>
+        {% endfor %}
+    </div>
+    <div>
+    <div class="pages" style="display: flex; justify-content: center;">
+        {% for page in pages %}
+            <a href="/posts/?page={{ page }}">
+                <button>{{ page }}</button>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

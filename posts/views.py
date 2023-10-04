@@ -1,8 +1,9 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from posts.models import Post, Hashtag
 from posts.forms import CreatePostForm
-# Create your views here.
+from posts.constants import PAGINATION_LIMIT
 
 
 def main_view(request):
@@ -14,10 +15,25 @@ def posts_view(request):
     print(request.user)
     if request.method == 'GET':
         posts = Post.objects.all()
+        search = request.GET.get('search')
+        page = int(request.GET.get('page', 1))
+
+        max_page = posts.__len__() / PAGINATION_LIMIT
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
+        else:
+            max_page = round(max_page)
+
+        posts = posts[PAGINATION_LIMIT * (page - 1): PAGINATION_LIMIT * page]
+
+        if search:
+            """startswith, endwith, icontains"""
+            posts = posts.filter(Q(title__icontains=search) | Q(description__icontains=search))
 
         context_data = {
             'posts': posts,
-            'user': request.user
+            'user': request.user,
+            'pages': range(1, max_page + 1)
         }
 
         return render(request, 'posts/posts.html', context=context_data)
